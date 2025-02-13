@@ -22,7 +22,6 @@ const LoginForm = ({ onLogin }) => {
       });
 
       if (response.ok) {
-        console.log('Login successful');
         onLogin(true);  
       } else {
         setError("Login failed. Please check your details.");

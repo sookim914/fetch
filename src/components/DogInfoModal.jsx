@@ -7,7 +7,7 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
   const [error, setError] = useState(null);
 
   const API_BASE_URL = "https://frontend-take-home-service.fetch.com";
-  const token = "your-auth-token"; 
+  const token = "your-auth-token";
 
   useEffect(() => {
     if (visible && dogId) {
@@ -26,7 +26,7 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify([id]), 
+        body: JSON.stringify([id]),
       });
 
       if (!response.ok) {
@@ -35,7 +35,7 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
 
       const data = await response.json();
       if (data && data.length > 0) {
-        setDogDetails(data[0]); 
+        setDogDetails(data[0]);
       } else {
         message.error("Dog details not found.");
       }
@@ -49,7 +49,7 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
 
   return (
     <Modal
-      title="Dog Information"
+      title="You got a match!"
       visible={visible}
       onCancel={onClose}
       footer={null}
@@ -63,7 +63,13 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
         dogDetails && (
           <Card
             hoverable
-            cover={<img alt={dogDetails.name} src={dogDetails.img} style={{ height: "200px", objectFit: "cover" }} />}
+            cover={
+              <img
+                alt={dogDetails.name}
+                src={dogDetails.img}
+                className="dog-image"
+              />
+            }
           >
             <Card.Meta
               title={dogDetails.name}

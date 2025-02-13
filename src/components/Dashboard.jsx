@@ -81,7 +81,7 @@ const Dashboard = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.log("Error:", error);
+      console.error("Error fetching dogs:", error);
     }
   };
 
@@ -131,8 +131,8 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); 
-    window.location.href = "/login"; 
+    localStorage.removeItem("authToken");
+    window.location.href = "/login";
   };
 
   return (
@@ -167,7 +167,7 @@ const Dashboard = () => {
             disabled={favorites.length === 0}
             className="generate-match-btn"
           >
-            Generate Match
+            Find Your Match<i className="fas fa-paw"></i>
           </Button>
           <Button onClick={handleSearch} type="primary" className="search-btn">
             Search
@@ -175,7 +175,7 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]} className="sort-order-row" >
+      <Row gutter={[16, 16]} className="sort-order-row">
         <Col xs={18} sm={12} md={6} align="right">
           <Select
             value={sortOrder}

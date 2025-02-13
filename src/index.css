@@ -30,17 +30,17 @@ body {
 }
 
 .custom-select .ant-select-selection-item {
-  font-size: 12px; /* Medium font size */
-  background-color: #e0f7fa; /* Light turquoise background */
-  border-radius: 8px; /* Rounded corners */
-  color: #00796b; /* Turquoise text color */
+  font-size: 12px; 
+  background-color: #e0f7fa; 
+  border-radius: 8px;
+  color: #00796b; 
 }
 
 .custom-select .ant-select-selection-item-remove {
-  font-size: 12px; /* Medium close icon */
-  color: #f44336; /* Red color for close icon */
+  font-size: 12px; 
+  color: #f44336; 
   margin-left: 6px;
-  cursor: pointer; /* Pointer on hover */
+  cursor: pointer; 
 }
 
 .custom-select-container {
@@ -49,19 +49,19 @@ body {
 }
 
 .card {
-  border-radius: 12px; /* Rounded card corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .card .ant-card-meta-title {
   font-weight: bold;
   font-size: 16px;
-  color: #00796b; /* Turquoise title text */
+  color: #00796b; 
 }
 
 .card .ant-card-meta-description {
   font-size: 14px;
-  color: #555; /* Darker gray for description */
+  color: #555; 
 }
 
 button {
@@ -69,7 +69,7 @@ button {
     45deg,
     #fbc02d,
     #80deea
-  ); /* Soft yellow to turquoise gradient */
+  ); 
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -83,11 +83,11 @@ button:hover {
     45deg,
     #ffeb3b,
     #4dd0e1
-  ); /* Lighter gradient on hover */
+  ); 
 }
 
 button:disabled {
-  background: #d0d0d0; /* Gray background for disabled state */
+  background: #d0d0d0; 
   cursor: not-allowed;
 }
 
@@ -101,20 +101,19 @@ button:disabled {
   margin-top: 16px;
 }
 
-/* Form Styling */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #86d1af; /* Soft blue gradient */
+  background: #86d1af; 
 }
 
 .login-form {
   background-color: white;
   padding: 32px;
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   width: 100%;
   max-width: 400px;
 }
@@ -145,7 +144,7 @@ button:disabled {
 }
 
 .login-form input:focus {
-  border: 2px solid #5c6bc0; /* Focus border color */
+  border: 2px solid #5c6bc0; 
 }
 
 .login-form button {
@@ -165,7 +164,7 @@ button:disabled {
     45deg,
     #ffeb3b,
     #4dd0e1
-  ); /* Lighter gradient on hover */
+  );
 }
 
 .login-form .error-message {
@@ -188,8 +187,8 @@ button:disabled {
   width: 50%;
   margin: 0 5px;
   font-size: 14px;
-  border-radius: 8px;
-  background-color: #4caf50;
+  border-radius: 6px;
+  background-color: #76cb79;
   color: white;
   border: none;
 }
@@ -201,13 +200,8 @@ button:disabled {
 .generate-match-btn {
   width: 50%;
   margin: 0 5px;
-  font-size: 14px;
-  border-radius: 8px;
-  background-color: #4dd0e1;
-}
-
-.generate-match-btn:hover {
-
+  font-size: 12px;
+  border-radius: 6px;
   background-color: #4dd0e1;
 }
 
@@ -225,6 +219,13 @@ button:disabled {
 .dog-card-img {
   height: 200px;
   object-fit: cover;
+}
+
+.dog-image {
+  height: 400px;
+  object-fit: cover;
+  object-position: center; 
+  width: 100%; 
 }
 
 .favorite-btn {
