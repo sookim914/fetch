@@ -22,8 +22,8 @@ const LoginForm = ({ onLogin }) => {
       });
 
       if (response.ok) {
-        console.log('Login successful')
-        onLogin(true);  // Update the App's isLoggedIn state
+        console.log('Login successful');
+        onLogin(true);  
       } else {
         setError("Login failed. Please check your details.");
       }
@@ -33,12 +33,13 @@ const LoginForm = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Log In</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+    <div className="login-container">
+      <div className="login-form">
+        <h2>WELCOME TO FETCH <i className="fas fa-paw"></i></h2>
+        <p>Please log in to continue</p>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block text-gray-600 font-medium mb-2" htmlFor="name">
               Name
             </label>
@@ -49,10 +50,9 @@ const LoginForm = ({ onLogin }) => {
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block text-gray-600 font-medium mb-2" htmlFor="email">
               Email
             </label>
@@ -63,14 +63,13 @@ const LoginForm = ({ onLogin }) => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+            className="login-button"
           >
-            Log In
+            LOG IN 
           </button>
         </form>
       </div>
