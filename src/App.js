@@ -35,7 +35,6 @@ function App() {
     setIsLoggedIn(status);
   };
 
-  // Handle redirects based on the login status
   if (isLoggedIn) {
     return (
       <Router>

@@ -1,67 +1,93 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Select, Button, Card, Row, Col, message } from "antd";
+import DogBreedMultiSelect from "./DogBreedMultiSelect";
+import LocationFilter from "./LocationFilter";
+import AgeFilter from "./AgeFilter";
+import DogInfoModal from "./DogInfoModal";
+
+const { Option } = Select;
 
 const Dashboard = () => {
   const [dogs, setDogs] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [filterBreed, setFilterBreed] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [page, setPage] = useState(1);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [minAge, setMinAge] = useState(null);
+  const [maxAge, setMaxAge] = useState(null);
+  const [breeds, setBreeds] = useState([]);
+  const [matchDogId, setMatchDogId] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const API_BASE_URL = "https://frontend-take-home-service.fetch.com";
+  const token = "your-auth-token";
 
   useEffect(() => {
-    fetchDogs();
-  }, [filterBreed, sortOrder, page]);
+    fetchDogs(page);
+  }, [page, sortOrder]);
 
-  const fetchDogs = async () => {
-    console.log("here");
+  const fetchDogs = async (nextPage = null) => {
+    try {
+      const url = new URL(`${API_BASE_URL}/dogs/search`);
+      url.searchParams.append("sort", `breed:${sortOrder}`);
+      url.searchParams.append("size", 32);
+      if (minAge !== null) url.searchParams.append("ageMin", minAge);
+      if (maxAge !== null) url.searchParams.append("ageMax", maxAge);
+      if (nextPage) url.searchParams.append("from", 32 * (nextPage - 1));
+      if (selectedLocations.length > 0)
+        selectedLocations.forEach((zip) =>
+          url.searchParams.append("zipCodes", zip)
+        );
+      if (breeds.length > 0)
+        breeds.forEach((breed) => url.searchParams.append("breeds", breed));
 
-    // Build the query parameters based on optional parameters
-    const params = new URLSearchParams();
-    console.log('hi', sortOrder, filterBreed)
-    if (sortOrder) {
-      params.append("sort", `breed:${sortOrder}`);
-    }
-    // if (filterBreed) {
-    //   params.append("breeds", filterBreed);
-    // }
-    // if (page) {
-    //   params.append("size", 10);
-    //   params.append("from", (page - 1) * 10);
-    // }
-    console.log(params)
-    // Make the GET request with the query parameters
-    const response = await fetch(
-      `${API_BASE_URL}/dogs/search${
-        params.toString() ? `?${params.toString()}` : ""
-      }`,
-      {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error(`Error fetching dogs: ${response.statusText}`);
       }
-    );
 
-    console.log("search", response);
-    const data = await response.json();
-    console.log("data", data);
-    const dogDetails = await fetchDogDetails(data.resultIds);
-    setDogs(dogDetails);
+      const data = await response.json();
+      if (data.resultIds && data.resultIds.length > 0) {
+        const dogDetails = await fetchDogDetails(data.resultIds);
+        setDogs(dogDetails);
+      } else {
+        setDogs([]);
+      }
+    } catch (error) {
+      console.error("Error fetching dogs:", error);
+      message.error("Failed to fetch dogs");
+    }
   };
 
   const fetchDogDetails = async (ids) => {
-    const response = await fetch(`${API_BASE_URL}/dogs`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ids),
-    });
-    return response.json();
+    try {
+      const response = await fetch(`${API_BASE_URL}/dogs`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(ids),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const handleSearch = () => {
+    setDogs([]);
+    fetchDogs();
   };
 
   const toggleFavorite = (dog) => {
@@ -73,90 +99,157 @@ const Dashboard = () => {
   };
 
   const generateMatch = async () => {
-    const response = await fetch(`${API_BASE_URL}/dogs/match`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(favorites.map((dog) => dog.id)),
-    });
-    const match = await response.json();
-    alert(`Your match is: ${match.match}`);
+    if (favorites.length === 0) {
+      message.warning("Please add some dogs to favorites to generate a match.");
+      return;
+    }
+
+    try {
+      const dogIds = favorites.map((dog) => dog.id);
+      const response = await fetch(`${API_BASE_URL}/dogs/match`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dogIds),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error generating match: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const matchedDogId = data.match;
+      setMatchDogId(matchedDogId);
+      setIsModalVisible(true);
+    } catch (error) {
+      console.error("Error generating match:", error);
+      message.error("Failed to generate match");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); 
+    window.location.href = "/login"; 
   };
 
   return (
-    <div className="container py-4">
-      <div className="d-flex gap-2 mb-4">
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-          className="form-select"
-        >
-          <option value="asc">Breed Ascending</option>
-          <option value="desc">Breed Descending</option>
-        </select>
-      </div>
+    <div className="dashboard-container">
+      <Row justify="end">
+        <Button className="logout-btn" type="primary" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Row>
 
-      {/* Dog Cards */}
-      <div className="row row-cols-1 row-cols-md-3 g-4">
+      <Row gutter={[16, 16]} align="middle">
+        <Col xs={24} sm={12} md={6}>
+          <DogBreedMultiSelect onBreedsChange={(breeds) => setBreeds(breeds)} />
+        </Col>
+        <Col xs={24} sm={12} md={6}>
+          <LocationFilter
+            onLocationChange={(locations) => setSelectedLocations(locations)}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={6}>
+          <AgeFilter
+            onAgeChange={(age) => {
+              setMinAge(age.minAge);
+              setMaxAge(age.maxAge);
+            }}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={6} className="dashboard-button-col">
+          <Button
+            onClick={generateMatch}
+            type="primary"
+            disabled={favorites.length === 0}
+            className="generate-match-btn"
+          >
+            Generate Match
+          </Button>
+          <Button onClick={handleSearch} type="primary" className="search-btn">
+            Search
+          </Button>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]} className="sort-order-row" >
+        <Col xs={18} sm={12} md={6} align="right">
+          <Select
+            value={sortOrder}
+            onChange={(value) => setSortOrder(value)}
+            className="sort-order-select"
+          >
+            <Option value="asc">Breed Ascending</Option>
+            <Option value="desc">Breed Descending</Option>
+          </Select>
+        </Col>
+      </Row>
+
+      <Row justify="start" gutter={[16, 16]}>
         {dogs.map((dog) => (
-          <div key={dog.id} className="col">
-            <div className="card h-100">
-              <img
-                src={dog.img}
-                alt={dog.name}
-                className="card-img-top"
-                style={{ height: "200px", objectFit: "cover" }}
-              />
-              <div className="card-body">
-                <h5 className="card-title">{dog.name}</h5>
-                <p className="card-text">Breed: {dog.breed}</p>
-                <p className="card-text">Age: {dog.age}</p>
-                <p className="card-text">Location: {dog.zip_code}</p>
-                <button
-                  onClick={() => toggleFavorite(dog)}
-                  className={`btn w-100 mt-2 ${
+          <Col key={dog.id} xs={24} sm={12} md={8} lg={6}>
+            <Card
+              cover={
+                <img alt={dog.name} src={dog.img} className="dog-card-img" />
+              }
+              actions={[
+                <Button
+                  type={
                     favorites.some((fav) => fav.id === dog.id)
-                      ? "btn-danger"
-                      : "btn-success"
-                  }`}
+                      ? "primary"
+                      : "default"
+                  }
+                  danger={favorites.some((fav) => fav.id === dog.id)}
+                  onClick={() => toggleFavorite(dog)}
+                  className="favorite-btn"
                 >
                   {favorites.some((fav) => fav.id === dog.id)
                     ? "Remove from Favorites"
-                    : "Add to Favorites"}
-                </button>
-              </div>
-            </div>
-          </div>
+                    : "Add to Favorites ♡"}
+                </Button>,
+              ]}
+            >
+              <Card.Meta
+                title={dog.name}
+                description={
+                  <>
+                    <p>Breed: {dog.breed}</p>
+                    <p>Age: {dog.age}</p>
+                    <p>Location: {dog.zip_code}</p>
+                  </>
+                }
+              />
+            </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
 
-      <div className="d-flex justify-content-between align-items-center mt-4">
-        <div>
-          <button
+      <div className="pagination-match-container">
+        <div className="pagination-buttons-wrapper">
+          <Button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            className="btn btn-outline-secondary"
+            className="pagination-btn"
           >
             Previous
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setPage((prev) => prev + 1)}
-            className="btn btn-outline-secondary ms-2"
+            className="pagination-btn"
           >
             Next
-          </button>
+          </Button>
         </div>
-        <button
-          onClick={generateMatch}
-          className={`btn ${
-            favorites.length === 0 ? "btn-secondary" : "btn-primary"
-          }`}
-        >
-          Generate Match
-        </button>
       </div>
+
+      <DogInfoModal
+        visible={isModalVisible}
+        dogId={matchDogId}
+        onClose={() => setIsModalVisible(false)}
+      />
     </div>
   );
 };

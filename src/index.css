@@ -1,17 +1,251 @@
-/* src/index.css or src/styles.css */
-
-/* Import Tailwind's base styles */
-@tailwind base;
-
-/* Import Tailwind's component styles */
-@tailwind components;
-
-/* Import Tailwind's utility styles */
-@tailwind utilities;
-
+/* Body and Page Styles */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-  }
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f8f7c6; /* Soft pastel yellow background */
+  color: #333;
+}
+
+.container.main {
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: 16px;
+  background-color: #ffffff; /* White background for the main content */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.filters {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  padding: 5px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 100%;
+}
+
+.main {
+  margin: 15px;
+}
+
+.custom-select .ant-select-selection-item {
+  font-size: 12px; /* Medium font size */
+  background-color: #e0f7fa; /* Light turquoise background */
+  border-radius: 8px; /* Rounded corners */
+  color: #00796b; /* Turquoise text color */
+}
+
+.custom-select .ant-select-selection-item-remove {
+  font-size: 12px; /* Medium close icon */
+  color: #f44336; /* Red color for close icon */
+  margin-left: 6px;
+  cursor: pointer; /* Pointer on hover */
+}
+
+.custom-select-container {
+  overflow: hidden;
+  height: auto;
+}
+
+.card {
+  border-radius: 12px; /* Rounded card corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.card .ant-card-meta-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #00796b; /* Turquoise title text */
+}
+
+.card .ant-card-meta-description {
+  font-size: 14px;
+  color: #555; /* Darker gray for description */
+}
+
+button {
+  background: linear-gradient(
+    45deg,
+    #fbc02d,
+    #80deea
+  ); /* Soft yellow to turquoise gradient */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(
+    45deg,
+    #ffeb3b,
+    #4dd0e1
+  ); /* Lighter gradient on hover */
+}
+
+button:disabled {
+  background: #d0d0d0; /* Gray background for disabled state */
+  cursor: not-allowed;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+/* Form Styling */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #86d1af; /* Soft blue gradient */
+}
+
+.login-form {
+  background-color: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.login-form p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.login-form input:focus {
+  border: 2px solid #5c6bc0; /* Focus border color */
+}
+
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  background: #f1d84a;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background: linear-gradient(
+    45deg,
+    #ffeb3b,
+    #4dd0e1
+  ); /* Lighter gradient on hover */
+}
+
+.login-form .error-message {
+  color: #f44336;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-button-col {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.search-btn {
+  width: 50%;
+  margin: 0 5px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.search-btn:hover {
+  background-color: #ffeb3b;
+}
+
+.generate-match-btn {
+  width: 50%;
+  margin: 0 5px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #4dd0e1;
+}
+
+.generate-match-btn:hover {
+
+  background-color: #4dd0e1;
+}
+
+.sort-order-row {
+  margin-top: 20px;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+}
+
+.sort-order-select {
+  width: 60%;
+  text-align: left;
+}
+
+.dog-card-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.favorite-btn {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 5em;
+}
+
+.logout-btn {
+  margin-bottom: 10px;
+  background-color: grey;
+  color: white;
+  border: solid 1px grey;
+  font-size: small;
+}
+
+.pagination-buttons-wrapper {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.pagination-btn {
+  margin-left: 5px;
+}
