@@ -98,18 +98,6 @@ This project interacts with the following backend API endpoints:
 
 ---
 
-## Project Structure
-
-```
-src/
-├── components/      # Reusable UI components
-├── pages/           # Individual pages (Login, Search)
-├── utils/           # Helper functions for API requests and utilities
-├── styles/          # CSS modules for styling components
-```
-
----
-
 ## Deployed Version
 
 The app is deployed and accessible at: **[Fetch Take-Home Exercise](https://fetch-soo-s-projects.vercel.app/login)**  
