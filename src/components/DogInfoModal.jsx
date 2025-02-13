@@ -7,7 +7,6 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
   const [error, setError] = useState(null);
 
   const API_BASE_URL = "https://frontend-take-home-service.fetch.com";
-  const token = "your-auth-token";
 
   useEffect(() => {
     if (visible && dogId) {
@@ -23,8 +22,7 @@ const DogInfoModal = ({ visible, dogId, onClose }) => {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify([id]),
       });

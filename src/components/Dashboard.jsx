@@ -20,7 +20,6 @@ const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const API_BASE_URL = "https://frontend-take-home-service.fetch.com";
-  const token = "your-auth-token";
 
   useEffect(() => {
     fetchDogs(page);
@@ -44,8 +43,7 @@ const Dashboard = () => {
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
         credentials: "include",
       });
@@ -72,8 +70,7 @@ const Dashboard = () => {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(ids),
       });
@@ -110,8 +107,7 @@ const Dashboard = () => {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(dogIds),
       });
